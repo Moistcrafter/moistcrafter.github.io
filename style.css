@@ -1,0 +1,46 @@
+body{
+    font-family: "Segoe UI";
+    margin: 0 auto;
+    padding: 0;
+    background-color: #131313;
+    background-size: cover;
+    text-align: center;
+  }
+    .container{
+        width: 100%;
+        height: 100%;
+        background-color: rgba(48, 48, 48, 0.582);
+    }
+
+@keyframes Slide {
+  0% {
+    transform: translateY(-20%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+.discord-profile{
+    width: 100%;
+    height: 100%;
+    background-color: rgba(19,19,19, 0);
+    text-align: center;
+    animation: 1s cubic-bezier(.3,.12,.4,1) 0s 1 Slide;
+    margin: 0 auto;
+    padding-top: 20px;
+
+    }
+
+
+.outside{
+    text-align:center;
+  }
+
+  #sob {
+    height: 600px;
+    width: 100%;
+    background-color: #131313;
+
+}

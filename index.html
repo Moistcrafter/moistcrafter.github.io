@@ -1,33 +1,27 @@
 <!DOCTYPE html>
-<html>
-   <body>
-       <video autoplay loop width="100%">
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script src="https://use.fontawesome.com/d1341f9b7a.js"></script>
+  <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/x-icon" href="sob.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Moistcrafter</title>
 
-    <source src="real.mp4"
-            type="video/mp4">
+  
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <script nomodule src="https://unpkg.com/@google/model-viewer/dist/model-viewer-legacy.js"></script>
 
-    Sorry, your browser doesn't support embedded videos.
-</video>
-      <script>
-         // Change the variables below to your liking
-         const currentURL = "real.mp4";
-         const pageTitle = "Loading...";
-         // End of changable variables
-         
-         function setTitle() {
-            document.title = pageTitle;
-         }
-         
-         function redirect() {
-            window.location.href = currentURL;
-         }
-         
-         function onload() {
-            setTitle();
-            redirect();
-         }
-         
-         window.onload = onload();
-       </script>
-   </body>
-</html>
+
+</head>
+<body>
+<!-- I am a comment! <div class="discord-profile">
+    <a href="https://discord.com/users/724091583250825226"><img class="image" src="https://lanyard.cnrad.dev/api/724091583250825226?borderRadius=15px&amp" style="opacity: 1" /></a>
+    </div>  -->
+<div id="sob">
+    <model-viewer  style="width: 100%; height: 100%; top: 0%;" src="aa.gltf" alt="sob" auto-rotate camera-controls ar>
+    </model-viewer>
+  </div>
+</body>
+</html> 

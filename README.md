@@ -25,4 +25,5 @@ Page scrolls when interacting with model on mobile (Temp fix: reload the page)
 - [x] plead
 - [x] main page
 - [ ] auto resize 3d viewport
+- [ ] match materials with sob
 </div>

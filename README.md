@@ -15,4 +15,6 @@
   <img width="100" height="100" src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/twitter/141/face-with-pleading-eyes_1f97a.png">
 </p>
   
+
+If the page scrolls as you rotate the object, reload the page
 </div>

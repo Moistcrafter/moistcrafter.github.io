@@ -16,5 +16,5 @@
 </p>
   
 
-If the page scrolls as you rotate the object, reload the page
+If the page scrolls as you rotate the object on mobile, reload the page
 </div>

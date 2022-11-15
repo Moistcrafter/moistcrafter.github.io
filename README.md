@@ -16,5 +16,13 @@
 </p>
   
 
-If the page scrolls as you rotate the object on mobile, reload the page
+<h2>Known Issues</h2>
+Page scrolls when interacting with model on mobile (Temp fix: reload the page)
+
+<h2>Todo</h2>
+
+- [x] sob
+- [x] plead
+- [x] main page
+- [ ] auto resize 3d viewport
 </div>

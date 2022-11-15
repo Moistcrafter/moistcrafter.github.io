@@ -75,7 +75,7 @@ body{
   }
 
   .button {
-    width: 400px;
+    width: 200px;
     animation: 1s cubic-bezier(.3,.12,.4,1) 0s 1 Slide;
     background-color:#1a1c1f;
     color: #fff;

@@ -1,5 +1,5 @@
 body{
-    font-family: "Segoe UI";
+    font-family: "Arial";
     margin: 0 auto;
     padding: 0;
     background-color: #131313;
@@ -28,11 +28,11 @@ body{
     background-color: rgba(19,19,19, 0);
     text-align: center;
     animation: 1s cubic-bezier(.3,.12,.4,1) 0s 1 Slide;
-    margin: 0 auto;
+    margin: 0px auto;
     padding-top: 20px;
+    padding-bottom: 7.5px;
 
     }
-
 
 .outside{
     text-align:center;
@@ -44,3 +44,63 @@ body{
     background-color: #131313;
 
 }
+.Homepage{
+  width: 100%;
+  height: 100%;
+  color: rgba(255, 255, 255, 1);
+  text-align: center;
+  animation: 1s cubic-bezier(.3,.12,.4,1) 0s 1 Slide;
+  margin: 0 auto;
+  padding: 0px;
+
+  }
+  a:link {
+    text-decoration: none;
+      color: #ffffff;
+  }
+  
+  a:visited {
+    text-decoration: none;
+    color: #ffffff;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+      color: #ffffff;
+  }
+  
+  a:active {
+    text-decoration: underline;
+      color: #ffffff;
+  }
+
+  .button {
+    width: 400px;
+    animation: 1s cubic-bezier(.3,.12,.4,1) 0s 1 Slide;
+    background-color:#1a1c1f;
+    color: #fff;
+    border:none;
+    border-radius:10px;
+    text-shadow: 2px 2px 8px #000000;
+    margin: 15px;
+    padding: 10px;
+    transition: transform .2s;
+  }
+
+  .button:hover {
+    transform: scale(1.1); 
+    background-color:#2d2f33;
+  }
+  .buttonhp {
+    width: 100%;
+    height: 30px;
+    animation: 1s cubic-bezier(.3,.12,.4,1) 0s 1 Slide;
+    background-color:#1a1c1f;
+    color: #fff;
+    border:none;
+    border-radius:10px;
+    text-shadow: 2px 2px 8px #000000;
+    margin: 0 auto;
+    padding: 0;
+    transition: transform .2s;
+  }

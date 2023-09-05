@@ -15,7 +15,7 @@
   <img width="100" height="100" src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/twitter/141/face-with-pleading-eyes_1f97a.png">
 </p>
   
-
+skill issue coder plewee do not mind
 <h2>Known Issues</h2>
 Page scrolls when interacting with model on mobile (Temp fix: reload the page)
 

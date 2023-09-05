@@ -13,6 +13,7 @@
         <div id="buttonContainer" class="button-group">
             <button id="clearButton" class="button">Clear</button>
             <button id="convertButton" class="button">Convert</button>
+            <button id="pasteButton" class="button">Paste</button>
             <button id="copyButton" class="button">Copy</button>
         </div>
         <textarea id="outputBox" rows="4" cols="50" readonly></textarea>
@@ -82,6 +83,7 @@
             inputBox.value = '';
             outputBox.value = '';
         });
+
         inputBox.addEventListener('input', updateOutput);
         convertButton.addEventListener('click', updateOutput);
 
@@ -89,6 +91,15 @@
             outputBox.select();
             document.execCommand('copy');
             window.getSelection().removeAllRanges();
+        });
+        
+        pasteButton.addEventListener('click', function () {
+            navigator.clipboard.readText().then(function (clipboardText) {
+                inputBox.value = clipboardText;
+                updateOutput();
+            }).catch(function (err) {
+                console.error('Failed to read clipboard data: ', err);
+            });
         });
     </script>
 </body>

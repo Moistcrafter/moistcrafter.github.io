@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>kto pyccknn</title>
+    <link rel="stylesheet" href="ktopyccknn.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+</head>
+<body>
+    <div id="container">
+        <textarea id="inputBox" placeholder="👩🏿‍🦼" rows="4" cols="50"></textarea>
+        <div id="buttonContainer" class="button-group">
+            <button id="clearButton" class="button">Clear</button>
+            <button id="convertButton" class="button">Convert</button>
+            <button id="copyButton" class="button">Copy</button>
+        </div>
+        <textarea id="outputBox" rows="4" cols="50" readonly></textarea>
+    </div>
+    <script>
+        const cyka = {
+            'А': 'A', 'а': 'a',
+            'Б': '6', 'б': '6',
+            'В': 'B', 'в': 'B',
+            'Г': 'r', 'г': 'r',
+            'Д': 'A', 'д': 'A',
+            'Е': 'E', 'е': 'e',
+            'Ё': 'E', 'ё': 'E',
+            'Ж': '*', 'ж': '*',
+            'З': '3', 'з': '3',
+            'И': 'N', 'и': 'N',
+            'Й': 'N', 'й': 'N',
+            'К': 'K', 'к': 'k',
+            'Л': 'n', 'л': 'n',
+            'М': 'M', 'м': 'm',
+            'Н': 'H', 'н': 'H',
+            'О': 'O', 'о': 'o',
+            'П': 'n', 'п': 'n',
+            'Р': 'P', 'р': 'p',
+            'С': 'C', 'с': 'c',
+            'Т': 'T', 'т': 'T',
+            'У': 'y', 'у': 'y',
+            'Ф': 'qp', 'ф': 'qp',
+            'Х': 'X', 'х': 'x',
+            'Ц': 'U', 'ц': 'u',
+            'Ч': '4', 'ч': '4',
+            'Ш': 'W', 'ш': 'w',
+            'Щ': 'W', 'щ': 'w',
+            'Ъ': 'b', 'ъ': 'b',
+            'Ы': 'bl', 'ы': 'bl',
+            'Ь': 'b', 'ь': 'b',
+            'Э': '3', 'э': '3',
+            'Ю': 'I-O', 'ю': 'I-O',
+            'Я': 'R', 'я': 'R'
+        };
+
+        const inputBox = document.getElementById('inputBox');
+        const clearButton = document.getElementById('clearButton');
+        const convertButton = document.getElementById('convertButton');
+        const copyButton = document.getElementById('copyButton');
+        const outputBox = document.getElementById('outputBox');
+
+        function ktoPyccknn(inputString) {
+            const result = [];
+            for (const char of inputString) {
+                if (char in cyka) {
+                    result.push(cyka[char]);
+                } else {
+                    result.push(char);
+                }
+            }
+            return result.join('');
+        }
+
+        function updateOutput() {
+            const inputText = inputBox.value;
+            const outputText = ktoPyccknn(inputText);
+            outputBox.value = outputText;
+        }
+
+        clearButton.addEventListener('click', function () {
+            inputBox.value = '';
+            outputBox.value = '';
+        });
+        inputBox.addEventListener('input', updateOutput);
+        convertButton.addEventListener('click', updateOutput);
+
+        copyButton.addEventListener('click', function () {
+            outputBox.select();
+            document.execCommand('copy');
+            window.getSelection().removeAllRanges();
+        });
+    </script>
+</body>
+</html>

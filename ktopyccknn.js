@@ -101,16 +101,25 @@ inputBox.addEventListener("input", updateOutput);
 convertButton.addEventListener("click", updateOutput);
 
 copyButton.addEventListener("click", function () {
-  outputBox.select();
-  document.execCommand("copy");
-  window.getSelection().removeAllRanges();
+    outputBox.focus();
+  navigator.clipboard
+    .writeText(outputBox.value)
+    .then(function () {
+      console.log("Text copied to clipboard");
+    })
+    .catch(function (err) {
+      console.error("Unable to copy:", err);
+    });
 });
 
-pasteButton.addEventListener('click', function () {
-    navigator.clipboard.readText().then(function (clipboardText) {
-        inputBox.value = clipboardText;
-        updateOutput();
-    }).catch(function (err) {
-        console.error('Failed to read clipboard data: ', err);
+pasteButton.addEventListener("click", function () {
+  navigator.clipboard
+    .readText()
+    .then(function (clipboardText) {
+      inputBox.value = clipboardText;
+      updateOutput();
+    })
+    .catch(function (err) {
+      console.error("Failed to read clipboard data: ", err);
     });
 });

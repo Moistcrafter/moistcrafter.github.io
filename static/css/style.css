@@ -1,16 +1,21 @@
-body{
+body {
     font-family: "Arial";
-    margin: 0 auto;
+    margin: 1em auto;
+    width: 75vw;
+    max-width: 500px;
     padding: 0;
     background-color: #131313;
     background-size: cover;
     text-align: center;
+    color: #fffffff6;
+    background-size: cover;
   }
-    .container{
-        width: 100%;
-        height: 100%;
-        background-color: rgba(48, 48, 48, 0.582);
-    }
+  
+.container {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(48, 48, 48, 0.582);
+}
 
 @keyframes Slide {
   0% {
@@ -22,7 +27,8 @@ body{
     opacity: 1;
   }
 }
-.discord-profile{
+
+.discord-profile {
     width: 100%;
     height: 100%;
     background-color: rgba(19,19,19, 0);
@@ -31,50 +37,55 @@ body{
     margin: 0px auto;
     padding-top: 20px;
     padding-bottom: 7.5px;
-
-    }
-
-.outside{
-    text-align:center;
-  }
-
-  #sob {
-    height:95vh;
-    width: 100%;
-    background-color: #131313;
-
 }
-.Homepage{
+
+.outside {
+    text-align: center;
+}
+
+#model {
+    margin: 0%;
+    height: 40vh;
+    width: 100%;
+    padding: 0;
+    background-color: rgba(255, 255, 255, 0); /* TEST */
+}
+
+.Homepage {
   width: 100%;
   height: 100%;
-  color: rgba(255, 255, 255, 1);
+  color: #ffffffff;
   text-align: center;
   animation: 1s cubic-bezier(.3,.12,.4,1) 0s 1 Slide;
   margin: 0 auto;
   padding: 0px;
+}
 
-  }
-  a:link {
-    text-decoration: none;
-      color: #ffffff;
-  }
-  
-  a:visited {
+/* grp a */
+
+a:link {
     text-decoration: none;
     color: #ffffff;
-  }
+}
   
-  a:hover {
-    text-decoration: underline;
-      color: #ffffff;
-  }
+a:visited {
+    text-decoration: none;
+    color: #ffffff;
+}
   
-  a:active {
+a:hover {
     text-decoration: underline;
-      color: #ffffff;
-  }
+    color: #ffffff;
+}
+  
+a:active {
+    text-decoration: underline;
+    color: #ffffff;
+}
 
-  .button {
+/* grp button */
+
+.button {
     width: 200px;
     animation: 1s cubic-bezier(.3,.12,.4,1) 0s 1 Slide;
     background-color:#1a1c1f;
@@ -85,13 +96,14 @@ body{
     margin: 15px;
     padding: 10px;
     transition: transform .2s;
-  }
+}
 
-  .button:hover {
+.button:hover {
     transform: scale(1.1); 
     background-color:#2d2f33;
-  }
-  .buttonhp {
+}
+
+.buttonhp {
     width: 100%;
     height: 30px;
     animation: 1s cubic-bezier(.3,.12,.4,1) 0s 1 Slide;
@@ -103,4 +115,44 @@ body{
     margin: 0 auto;
     padding: 0;
     transition: transform .2s;
-  }
+}
+
+.sog {
+    animation: 1s cubic-bezier(.3,.12,.4,1) 0s 1 Slide;
+    width: 40%;
+    height: 40%;
+    transition: transform .2s;
+    border-radius: 10px;
+    border: 0px;
+    background-image: url(https://soggy.cat/img/soggycat.webp);
+    background-size: cover;
+    margin: 15px;
+    padding: 100px;
+    background-position: 50% 50%;
+}
+
+.sog:hover {
+    transform: scale(1.1); 
+    background-color:#2d2f33;
+}
+
+fieldset {
+    border: none;
+    padding: 2rem 0;
+    border-bottom: 3px solid #383b3f;
+}
+
+fieldset {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#ar-desc {
+    display: none;
+}
+
+model-viewer[ar-status="not-presenting"], #ar-desc{
+  display: block;
+}

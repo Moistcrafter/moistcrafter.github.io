@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <script src="https://use.fontawesome.com/d1341f9b7a.js"></script>
   <script src='https://kit.fontawesome.com/a076d05399.js'></script>
-  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="stylesheet" href="/static/css/arpage.css">
   <link rel="icon" type="image/x-icon" href="sob.ico">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Moistcrafter</title>
@@ -14,8 +14,32 @@
 </head>
 <body>
 <div id="model">
-    <model-viewer  style="width: 100%; height: 100%; top: 0%;" src="models/car/sog3.glb" alt="sob" auto-rotate camera-controls ar>
-    </model-viewer>
+    <model-viewer  style="width: 100%; height: 100%; top: 0%;" src="models/car/sog3.glb" alt="sob" auto-rotate camera-controls ar></model-viewer>
   </div>
+  <div id="buttons">
+    <button class="slide selected" onclick="switchSrc(this, 'sog1')" style="background-image: url('/static/assets/sog.jpg');"></button>
+    <button class="slide selected" onclick="switchSrc(this, 'sog2')" style="background-image: url('/static/assets/sog2.png');"></button>
+    <button class="slide selected" onclick="switchSrc(this, 'sog3')" style="background-image: url('/static/assets/sog5.png');"></button>
+  </div>
+
+  <script type="module">
+    const modelViewer = document.querySelector("model-viewer");
+  
+    window.switchSrc = (element, name) => {
+      const base = "/ar/models/car/" + name;
+      modelViewer.src = base + '.glb';
+      modelViewer.poster = base + '.webp';
+      const slides = document.querySelectorAll(".slide");
+      slides.forEach((element) => {element.classList.remove("selected");});
+      element.classList.add("selected");
+    };
+  
+    document.querySelector(".slider").addEventListener('beforexrselect', (ev) => {
+      // Keep slider interactions from affecting the XR scene.
+      ev.preventDefault();
+    });
+  </script>
+
+
 </body>
 </html> 

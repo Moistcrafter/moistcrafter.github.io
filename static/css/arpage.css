@@ -86,8 +86,6 @@ a:active {
 /* grp button */
 
 button {
-    width: 200px;
-
     animation: 1s cubic-bezier(.3,.12,.4,1) 0s 1 Slide;
     background-color:#1a1c1f;
     color: #fff;
@@ -98,14 +96,16 @@ button {
     padding: 10px;
     transition: transform .2s;
     background-size: cover;
+    width: 200px;
+    height: 7vh;
 }
 
 #buttons {
     /* margin: 10px; */
-    padding: 5px;
+    padding: 0;
     width: 80%;
     max-width: 1000px;
-    display: flex;
+    display:flex;
     flex-direction: row;
     justify-content: center;
     margin: auto;
@@ -115,6 +115,15 @@ button:hover {
     transform: scale(1.1); 
     background-color:#2d2f33;
 }
+
+button img {
+    position:absolute;
+    top: 50%;
+    left:50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
 
 .sog {
     animation: 1s cubic-bezier(.3,.12,.4,1) 0s 1 Slide;

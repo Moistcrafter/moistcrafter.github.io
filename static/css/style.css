@@ -1,8 +1,9 @@
 body {
     font-family: "Arial";
     margin: 1em auto;
-    width: 75vw;
-    max-width: 500px;
+    /* width: 75vw;
+    max-width: 500px; */
+    margin-top: 0;
     padding: 0;
     background-color: #131313;
     background-size: cover;
@@ -124,7 +125,7 @@ a:active {
     transition: transform .2s;
     border-radius: 10px;
     border: 0px;
-    background-image: url(https://soggy.cat/img/soggycat.webp);
+    background-image: url(/static/assets/wide.png);
     background-size: cover;
     margin: 15px;
     padding: 100px;
@@ -156,3 +157,34 @@ fieldset {
 model-viewer[ar-status="not-presenting"], #ar-desc{
   display: block;
 }
+
+/* haahhahahahaa silly copy passte tab */
+/* fix this later but make these ID specific only */
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #1a1c1f;
+  }
+  
+  li {
+    float: left;
+  }
+  
+  li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+  
+  /* Change the link color to #111 (black) on hover */
+  li a:hover {
+    background-color: #2d2f33;
+  }
+
+  .active {
+    background-color: #252527;
+  }

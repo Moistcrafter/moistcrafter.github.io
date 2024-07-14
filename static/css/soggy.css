@@ -32,3 +32,8 @@ footer {
     margin: 20px;
     color: #77787a;
 }
+
+#imageContainer {
+    display: flex;
+    flex-direction: column;
+}

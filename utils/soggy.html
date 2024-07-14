@@ -11,14 +11,41 @@
     <h1 class="title">soggy car</h1>
     <h2 class="subtitle">the soggy car is literlaly real!!1!</h2>
     <div id="soggies">
-        <img src="/static/assets//whatwouldyoudo.png" id="sog" class="sog" alt="what would you do..">
+
         <video width="320" height="240" controls><source src="/static/assets/sog_it_up.mp4" type="video/mp4" id="sogitup" class="sog">Your browser does not support the video tag, but it is about a dynamic particle fluid simulation of a dampened feline</video>
-        <img src="/static/assets/sog.jpg" id="sog1" class="sog" alt="this is sog">
-        <img src="/static/assets/sog2.png" id="sog2" class="sog" alt="this car is very dampened">
-        <img src="/static/assets/sog3.jpg" id="sog3" class="sog" alt="sharkr ze fribous powdr">
-        <img src="/static/assets/sog4.png" id="sog4" class="sog" alt="sogs :(">
-        <img src="/static/assets/sog5.png" id="sog5" class="sog" alt="sog wit cup">
+        <div id="imageContainer"></div>
     </div>
+    <script>
+        // Replace with the URL of your image folder
+        const folderUrl = '/static/assets';
+
+        // Function to append images with the 'sog' class
+        function appendImages(images) {
+            const imageContainer = document.getElementById('imageContainer');
+            
+            images.forEach((imageSrc) => {
+                const img = document.createElement('img');
+                img.src = imageSrc;
+                img.classList.add('sog');
+                imageContainer.appendChild(img);
+            });
+        }
+
+        // Fetch and filter images with .png and .jpg extensions
+        fetch(folderUrl)
+            .then(response => response.text())
+            .then(data => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(data, 'text/html');
+                const images = Array.from(doc.querySelectorAll('a'))
+                    .filter(a => /\.(png|jpg)$/i.test(a.href))
+                    .map(a => a.href);
+                appendImages(images);
+            })
+            .catch(error => {
+                console.error('Error fetching images:', error);
+            });
+    </script>
 </body>
 <footer>
     fibrous powder, damp feline; shark the soggy cat. 🍰

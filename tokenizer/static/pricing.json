@@ -1,0 +1,27 @@
+{
+    "pricing_gpt4o": {
+      "input": 0.000005,
+      "output": 0.000015,
+      "inputBatch": 0.0000025,
+      "outputBatch": 0.0000075
+    },
+    "pricing_gpt4o_2024_05_13": {
+      "input": 0.000005,
+      "output": 0.000015,
+      "inputBatch": 0.0000025,
+      "outputBatch": 0.0000075
+    },
+    "gpt_3_5_turbo_0125": {
+      "input": 0.0000005,
+      "output": 0.0000015,
+      "inputBatch": 0.00000025,
+      "outputBatch": 0.00000075
+    },
+    "gpt_3_5_turbo_instruct": {
+      "input": 0.0000015,
+      "output": 0.000002,
+      "inputBatch": 0.00000075,
+      "outputBatch": 0.000001
+    }
+  }
+  

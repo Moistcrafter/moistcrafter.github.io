@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <title>Tokenizer</title>
+    <link rel="stylesheet" href="/tokenizer/css/styles.css" />
+    <link rel="icon" type="svg/xml" href="/tokenizer/static/oai_icon.svg" />
+  </head>
+  <body>
+    <div class="root">
+      <div class="route-container">
+        <header class="global-header">
+          <div class="global-header-container">
+            <div class="global-header-logo">
+              <a href="">
+                <img src="/tokenizer/static/oai_icon.svg" alt="OpenAI logo" width="30" height="30" />
+              </a>
+            </div>
+          </div>
+        </header>
+        <div class="app-wrapper">
+          <div class="app-main">
+            <div class="page-body">
+              <h1>Tokenizer</h1>
+              <hr size="2" color="#474747" />
+              <div class="tokenizer-encodings">
+                <!-- <button type="button" class="button-model" value="Xenova/gpt-4o">Custom</button> -->
+                <button type="button" class="button-model selected" value="Xenova/gpt-4o">GPT-4o</button>
+                <button type="button" class="button-model" value="Xenova/text-embedding-ada-002">GPT-3.5 & GPT-4</button>
+                <button type="button" class="button-model" value="Xenova/gpt-3">GPT-3</button>
+                <button type="button" class="button-model" value="Xenova/text-davinci-003">text-davinci-003 / text-davinci-002</button>
+                <button type="button" class="button-model" value="Xenova/gemma-2-tokenizer">Gemma 2</button>
+                <button type="button" class="button-model" value="Xenova/grok-1-tokenizer">Grok-1</button>
+                <button type="button" class="button-model" value="Xenova/claude-tokenizer">Claude</button>
+                <button type="button" class="button-model" value="Xenova/mistral-tokenizer-v3">Mistral v3</button>
+                <button type="button" class="button-model" value="Xenova/mistral-tokenizer-v1">Mistral v1</button>
+                <button type="button" class="button-model" value="Xenova/llama3-tokenizer-new">Llama 3</button>
+                <button type="button" class="button-model" value="Xenova/llama2-tokenizer">Llama / Llama 2</button>
+                <button type="button" class="button-model" value="Xenova/llama-code-tokenizer">Llama Code</button>
+                <button type="button" class="button-model" value="Xenova/c4ai-command-r-v01-tokenizer">Cohere Command-R</button>
+                <button type="button" class="button-model" value="Xenova/dbrx-instruct-tokenizer">DBRX Instruct</button>
+                <button type="button" class="button-model" value="Xenova/t5-tokenizer-new">T5</button>
+                <button type="button" class="button-model" value="Xenova/Nemotron-4-340B-Instruct-Tokenizer">Nemotron 4</button>
+                <button type="button" class="button-model" value="Xenova/bert-base-cased">bert-base-cased</button>
+              </div>
+
+              <br />
+
+              <textarea id="inputText" rows="4" cols="50" placeholder="Enter some text"></textarea>
+
+              <br />
+
+              <div class="tokenizer-input-actions">
+                <button type="button" class="button-util" id="clearText">Clear</button>
+                <button type="button" class="button-util" id="exampleButton">Show example</button>
+              </div>
+
+              <!-- <br /> -->
+
+              <div id="databox">
+                <div id="tokenCountGrp">
+                  <h5 class="datalabel">Tokens</h5>
+                  <div id="tokenCount" class="number">0</div>
+                </div>
+
+                <br />
+
+                <div id="tokenCountGrp">
+                  <h5 class="datalabel">Characters</h5>
+                  <div id="characterCount">0</div>
+                </div>
+              </div>
+
+              <br />
+
+              <hr size="2" color="#474747" />
+              <div id="tokenOutput"></div>
+              <hr size="2" color="#474747" />
+              <div class="container2">
+                <div class="switch-wrapper">
+                  <input type="radio" id="text" name="switch" class="switch-input" value="text" checked />
+                  <label for="text" class="switch-label">Text</label>
+                  <input type="radio" id="token-ids" name="switch" class="switch-input" value="tokenid" />
+                  <label for="token-ids" class="switch-label">Token IDs</label>
+                  <div class="slider"></div>
+                </div>
+              </div>
+              <br />
+              <br />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script type="module" src="/tokenizer/js/index.js"></script>
+</html>

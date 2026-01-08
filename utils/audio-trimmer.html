@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Audio Trimmer</title>
+  <link rel="stylesheet" href="/tokenizer/css/styles.css" />
+  <link rel="stylesheet" href="/static/css/utils.css" />
+  <link rel="icon" type="image/x-icon" href="/sob.ico" />
+</head>
+<body class="audio-page">
+  <main class="simple-shell">
+    <h1>Audio trimmer</h1>
+    <p class="lede">Drop an audio file, set your in/out points, and export a trimmed WAV.</p>
+
+    <div class="section-card" id="audio-section">
+      <div class="section-header">
+        <div class="section-title">
+          <h3>Trim a file</h3>
+          <small>Handles follow your drag; export saves the selection.</small>
+        </div>
+        <div class="section-actions">
+          <button class="button-ghost" id="clearAudio">Clear</button>
+        </div>
+      </div>
+
+      <div id="dropzone" class="dropzone">
+        <p>Drop an audio file here or click to browse</p>
+        <p style="font-size: 14px;">MP3, WAV, OGG, and more</p>
+        <input type="file" id="fileInput" accept="audio/*" style="display: none;" />
+      </div>
+
+      <div class="waveform-shell" id="waveformContainer" style="display: none;">
+        <div id="waveform"></div>
+        <div id="selectionOverlay" class="selection-overlay"></div>
+        <div id="leftHandle" class="handle left"></div>
+        <div id="rightHandle" class="handle right"></div>
+      </div>
+
+      <div class="controls">
+        <div class="time-display" id="timeDisplay">00:00 / 00:00 (Selection: 00:00)</div>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <button class="button-primary" id="playButton" disabled><span aria-hidden="true">▶</span>Play selection</button>
+          <button class="button-primary" id="exportButton" disabled><span aria-hidden="true">⬇</span>Export</button>
+        </div>
+      </div>
+      <p class="notice">Export produces a WAV using the selection range.</p>
+    </div>
+
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/6.6.4/wavesurfer.min.js"></script>
+  <script>
+    (() => {
+      const dropzone = document.getElementById('dropzone');
+      const fileInput = document.getElementById('fileInput');
+      const waveformContainer = document.getElementById('waveformContainer');
+      const playButton = document.getElementById('playButton');
+      const exportButton = document.getElementById('exportButton');
+      const timeDisplay = document.getElementById('timeDisplay');
+      const selectionOverlay = document.getElementById('selectionOverlay');
+      const leftHandle = document.getElementById('leftHandle');
+      const rightHandle = document.getElementById('rightHandle');
+      const clearAudio = document.getElementById('clearAudio');
+
+      let wavesurfer = null;
+      let audioContext = null;
+      let audioBuffer = null;
+      let duration = 0;
+      let startTime = 0;
+      let endTime = 0;
+      let isPlaying = false;
+      let currentFile = null;
+
+      function initWaveSurfer() {
+        if (wavesurfer) {
+          wavesurfer.destroy();
+        }
+
+        wavesurfer = WaveSurfer.create({
+          container: '#waveform',
+          waveColor: '#4d515f',
+          progressColor: '#10a37f',
+          cursorColor: '#10a37f',
+          height: 140,
+          barWidth: 2,
+          barRadius: 2,
+          barGap: 1,
+          responsive: true,
+          normalize: false
+        });
+
+        wavesurfer.on('ready', () => {
+          duration = wavesurfer.getDuration();
+          startTime = 0;
+          endTime = duration;
+          waveformContainer.style.display = 'block';
+          playButton.disabled = false;
+          exportButton.disabled = false;
+          updateSelection();
+          updateTimeDisplay();
+          setTimeout(() => wavesurfer.drawBuffer(), 50);
+        });
+
+        wavesurfer.on('audioprocess', () => {
+          const current = wavesurfer.getCurrentTime();
+          updateTimeDisplay(current);
+          if (isPlaying && current >= endTime) {
+            wavesurfer.pause();
+            wavesurfer.seekTo(startTime / duration);
+            playButton.innerHTML = '<span aria-hidden="true">▶</span>Play selection';
+            isPlaying = false;
+          }
+        });
+
+        wavesurfer.on('seek', () => updateTimeDisplay(wavesurfer.getCurrentTime()));
+        wavesurfer.on('finish', () => {
+          playButton.innerHTML = '<span aria-hidden="true">▶</span>Play selection';
+          isPlaying = false;
+        });
+      }
+
+      function formatTime(seconds) {
+        const total = Math.max(0, Math.floor(seconds || 0));
+        const mins = Math.floor(total / 60);
+        const secs = total % 60;
+        return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+      }
+
+      function updateTimeDisplay(current = 0) {
+        if (!wavesurfer) return;
+        const live = current || wavesurfer.getCurrentTime();
+        const selection = Math.max(0, endTime - startTime);
+        timeDisplay.textContent = `${formatTime(live)} / ${formatTime(duration)} (Selection: ${formatTime(selection)})`;
+      }
+
+      function updateSelection() {
+        if (!duration) return;
+        const startPct = (startTime / duration) * 100;
+        const endPct = (endTime / duration) * 100;
+        const widthPct = Math.max(0, endPct - startPct);
+        selectionOverlay.style.left = `${startPct}%`;
+        selectionOverlay.style.width = `${widthPct}%`;
+        leftHandle.style.left = `${startPct}%`;
+        rightHandle.style.left = `${endPct}%`;
+      }
+
+      function bufferToWav(buffer) {
+        const numChannels = buffer.numberOfChannels;
+        const length = buffer.length * numChannels * 2 + 44;
+        const sampleRate = buffer.sampleRate;
+        const wavBuffer = new ArrayBuffer(length);
+        const view = new DataView(wavBuffer);
+
+        function writeString(offset, string) {
+          for (let i = 0; i < string.length; i++) {
+            view.setUint8(offset + i, string.charCodeAt(i));
+          }
+        }
+
+        writeString(0, 'RIFF');
+        view.setUint32(4, length - 8, true);
+        writeString(8, 'WAVE');
+        writeString(12, 'fmt ');
+        view.setUint32(16, 16, true);
+        view.setUint16(20, 1, true);
+        view.setUint16(22, numChannels, true);
+        view.setUint32(24, sampleRate, true);
+        view.setUint32(28, sampleRate * numChannels * 2, true);
+        view.setUint16(32, numChannels * 2, true);
+        view.setUint16(34, 16, true);
+        writeString(36, 'data');
+        view.setUint32(40, length - 44, true);
+
+        let offset = 44;
+        for (let i = 0; i < buffer.length; i++) {
+          for (let channel = 0; channel < numChannels; channel++) {
+            const sample = Math.max(-1, Math.min(1, buffer.getChannelData(channel)[i]));
+            view.setInt16(offset, sample < 0 ? sample * 0x8000 : sample * 0x7FFF, true);
+            offset += 2;
+          }
+        }
+        return new Blob([wavBuffer], { type: 'audio/wav' });
+      }
+
+      function handleFile(file) {
+        if (!file || !file.type.includes('audio')) {
+          alert('Please pick an audio file.');
+          return;
+        }
+        currentFile = file;
+        if (!audioContext) {
+          audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        initWaveSurfer();
+        waveformContainer.style.display = 'none';
+        playButton.disabled = true;
+        exportButton.disabled = true;
+        wavesurfer.loadBlob(file);
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          audioContext.decodeAudioData(e.target.result).then((buffer) => {
+            audioBuffer = buffer;
+          });
+        };
+        reader.readAsArrayBuffer(file);
+      }
+
+      dropzone.addEventListener('click', () => fileInput.click());
+      dropzone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropzone.classList.add('dragover');
+      });
+      dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+      dropzone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropzone.classList.remove('dragover');
+        if (e.dataTransfer.files.length) {
+          handleFile(e.dataTransfer.files[0]);
+        }
+      });
+      fileInput.addEventListener('change', () => {
+        if (fileInput.files.length) {
+          handleFile(fileInput.files[0]);
+        }
+      });
+
+      playButton.addEventListener('click', () => {
+        if (!wavesurfer) return;
+        if (isPlaying) {
+          wavesurfer.pause();
+          playButton.innerHTML = '<span aria-hidden="true">▶</span>Play selection';
+          isPlaying = false;
+        } else {
+          wavesurfer.seekTo(startTime / duration);
+          wavesurfer.play();
+          playButton.innerHTML = '<span aria-hidden="true">⏸</span>Pause';
+          isPlaying = true;
+        }
+      });
+
+      exportButton.addEventListener('click', () => {
+        if (!audioBuffer) return;
+        const sampleRate = audioBuffer.sampleRate;
+        const channels = audioBuffer.numberOfChannels;
+        const startSample = Math.floor(startTime * sampleRate);
+        const endSample = Math.floor(endTime * sampleRate);
+        const frameCount = Math.max(0, endSample - startSample);
+        const trimmedBuffer = audioContext.createBuffer(channels, frameCount, sampleRate);
+
+        for (let channel = 0; channel < channels; channel++) {
+          const source = audioBuffer.getChannelData(channel);
+          const target = trimmedBuffer.getChannelData(channel);
+          for (let i = 0; i < frameCount; i++) {
+            target[i] = source[i + startSample];
+          }
+        }
+
+        const wavBlob = bufferToWav(trimmedBuffer);
+        const name = currentFile ? currentFile.name.replace(/\.[^/.]+$/, '') + '-trimmed.wav' : 'trimmed.wav';
+        const url = URL.createObjectURL(wavBlob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = name;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => {
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        }, 120);
+      });
+
+      clearAudio.addEventListener('click', () => {
+        if (wavesurfer) {
+          wavesurfer.destroy();
+          wavesurfer = null;
+        }
+        waveformContainer.style.display = 'none';
+        playButton.disabled = true;
+        exportButton.disabled = true;
+        timeDisplay.textContent = '00:00 / 00:00 (Selection: 00:00)';
+        dropzone.classList.remove('dragover');
+        fileInput.value = '';
+        currentFile = null;
+        audioBuffer = null;
+        isPlaying = false;
+      });
+
+      let dragTarget = null;
+      function startDrag(target) {
+        dragTarget = target;
+      }
+
+      function endDrag() {
+        dragTarget = null;
+      }
+
+      function onDragMove(clientX) {
+        if (!dragTarget || !wavesurfer) return;
+        const rect = waveformContainer.getBoundingClientRect();
+        let pos = (clientX - rect.left) / rect.width;
+        pos = Math.max(0, Math.min(pos, 1));
+        if (dragTarget === 'left') {
+          startTime = pos * duration;
+          if (startTime >= endTime - 0.1) startTime = endTime - 0.1;
+          if (isPlaying) wavesurfer.seekTo(startTime / duration);
+        } else if (dragTarget === 'right') {
+          endTime = pos * duration;
+          if (endTime <= startTime + 0.1) endTime = startTime + 0.1;
+        }
+        updateSelection();
+        updateTimeDisplay();
+      }
+
+      leftHandle.addEventListener('pointerdown', (e) => { e.preventDefault(); startDrag('left'); });
+      rightHandle.addEventListener('pointerdown', (e) => { e.preventDefault(); startDrag('right'); });
+      document.addEventListener('pointermove', (e) => onDragMove(e.clientX));
+      document.addEventListener('pointerup', endDrag);
+
+      window.addEventListener('resize', () => {
+        if (wavesurfer) {
+          wavesurfer.drawBuffer();
+          updateSelection();
+        }
+      });
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible' && wavesurfer) {
+          setTimeout(() => {
+            wavesurfer.drawBuffer();
+            updateSelection();
+          }, 100);
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

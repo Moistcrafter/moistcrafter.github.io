@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Color Temperature</title>
+  <link rel="stylesheet" href="/tokenizer/css/styles.css" />
+  <link rel="stylesheet" href="/static/css/utils.css" />
+  <link rel="icon" type="image/x-icon" href="/sob.ico" />
+</head>
+<body class="compact color-page">
+  <main class="simple-shell">
+    <div class="section-card" id="color-temp-section">
+      <div class="section-header">
+        <div class="section-title">
+          <h3 style="margin:0;">Color temperature</h3>
+        </div>
+        <div class="section-actions">
+          <button class="button-ghost" id="resetColor">Reset</button>
+          <button class="button-ghost" id="toggleColorPanel">Shrink controls</button>
+        </div>
+      </div>
+
+      <div id="colorPanel" class="color-grid">
+        <div class="input-stack">
+          <div class="label-row">
+            <span>Kelvin</span>
+            <span id="kelvinLabel">6500 K</span>
+          </div>
+          <input type="range" id="kelvinSlider" class="range-input" min="1000" max="40000" step="50" value="6500" aria-label="Color temperature slider" />
+          <input type="number" id="kelvinInput" class="number-input" min="1000" max="40000" step="50" value="6500" aria-label="Color temperature number" />
+        </div>
+
+        <div class="input-stack">
+          <div class="label-row">
+            <span>Resulting color</span>
+            <span id="hexLabel">#FFFFFF</span>
+          </div>
+          <div class="color-swatch" id="colorSwatch"></div>
+          <p class="hint">Hide the panel to let the color fill the page. Use the floating toggle to bring it back.</p>
+        </div>
+      </div>
+    </div>
+    <!-- <button class="floating-toggle" id="showPanelButton">Expand controls</button> -->
+
+  </main>
+
+  <script>
+    (() => {
+      const slider = document.getElementById('kelvinSlider');
+      const numberInput = document.getElementById('kelvinInput');
+      const kelvinLabel = document.getElementById('kelvinLabel');
+      const hexLabel = document.getElementById('hexLabel');
+      const swatch = document.getElementById('colorSwatch');
+      const toggleColorPanel = document.getElementById('toggleColorPanel');
+      const resetColor = document.getElementById('resetColor');
+      //const showPanelButton = document.getElementById('showPanelButton');
+      const colorPanel = document.getElementById('colorPanel');
+      const card = document.getElementById('color-temp-section');
+      const clampKelvin = (val) => Math.min(40000, Math.max(1000, Number(val) || 6500));
+
+      function kelvinToRgb(kelvin) {
+        const temp = kelvin / 100;
+        let red;
+        let green;
+        let blue;
+
+        if (temp <= 66) {
+          red = 255;
+          green = temp;
+          green = 99.4708025861 * Math.log(green) - 161.1195681661;
+          blue = temp <= 19 ? 0 : temp - 10;
+          blue = 138.5177312231 * Math.log(blue) - 305.0447927307;
+        } else {
+          red = temp - 60;
+          red = 329.698727446 * Math.pow(red, -0.1332047592);
+          green = temp - 60;
+          green = 288.1221695283 * Math.pow(green, -0.0755148492);
+          blue = 255;
+        }
+
+        const clamp = (x) => Math.max(0, Math.min(255, Math.round(x)));
+        return { r: clamp(red), g: clamp(green), b: clamp(blue) };
+      }
+
+      function toHex({ r, g, b }) {
+        const hex = (c) => c.toString(16).padStart(2, '0');
+        return `#${hex(r)}${hex(g)}${hex(b)}`.toUpperCase();
+      }
+
+      function applyKelvin(val) {
+        const k = clampKelvin(val);
+        const rgb = kelvinToRgb(k);
+        const hex = toHex(rgb);
+        const color = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+
+        slider.value = k;
+        numberInput.value = k;
+        kelvinLabel.textContent = `${k} K`;
+        hexLabel.textContent = hex;
+        swatch.style.backgroundColor = color;
+        document.documentElement.style.setProperty('--page-bg', color);
+        document.body.style.backgroundColor = color;
+      }
+
+      function hidePanel() {
+        colorPanel.classList.add('collapsed');
+        card.classList.add('collapsed-state');
+        toggleColorPanel.textContent = 'Expand controls';
+        //showPanelButton.classList.add('visible');
+      }
+
+      function showPanel() {
+        colorPanel.classList.remove('collapsed');
+        card.classList.remove('collapsed-state');
+        toggleColorPanel.textContent = 'Shrink controls';
+        //showPanelButton.classList.remove('visible');
+      }
+
+      slider.addEventListener('input', (e) => applyKelvin(e.target.value));
+      numberInput.addEventListener('input', (e) => applyKelvin(e.target.value));
+
+      toggleColorPanel.addEventListener('click', () => {
+        if (colorPanel.classList.contains('collapsed')) {
+          showPanel();
+        } else {
+          hidePanel();
+        }
+      });
+
+      //showPanelButton.addEventListener('click', showPanel);
+      resetColor.addEventListener('click', () => applyKelvin(6500));
+      applyKelvin(6500);
+    })();
+  </script>
+</body>
+</html>
